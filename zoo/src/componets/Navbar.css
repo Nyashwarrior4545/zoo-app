@@ -1,0 +1,42 @@
+/* Navbar.css */
+
+.navbar {
+  background-color: #333;
+  padding: 10px;
+  width: 100%;
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+}
+
+.navbar-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar-item {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.navbar-user {
+  color: white;
+  margin-right: 10px;
+}
+
+.navbar-link {
+  color: white;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.navbar-logout {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
