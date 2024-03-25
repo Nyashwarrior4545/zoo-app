@@ -2,7 +2,7 @@
 
 import { useEffect }from 'react'
 import { useTicketContext } from "../hooks/useTicketContext"
-import Sidebar from '../componets/Sidebar';
+import Layout from '../componets/Layout';
 
 // components
 import TicketForm from '../componets/TicketForm'
@@ -11,13 +11,15 @@ const Home = () => {
 
 
   return (
-    <div className="home">
+    <Layout>
+      <div className="home">
       <div className="ticket">
       </div>
-      {/* <Sidebar/> */}
-      <TicketForm />
-      <Sidebar/>
-    </div>
+        <TicketForm />
+      </div>
+
+    </Layout>
+    
   )
 }
 

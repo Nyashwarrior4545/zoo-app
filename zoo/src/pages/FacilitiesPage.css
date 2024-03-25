@@ -1,0 +1,8 @@
+.image-card .card-img-top {
+    height: 200px; /* Set the desired height */
+    object-fit: cover; /* Ensure the image covers the entire space */
+  }
+  
+.card {
+    margin-bottom: 30px;
+}

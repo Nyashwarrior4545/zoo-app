@@ -10,15 +10,14 @@ const requireAuth = require( '../middleware/requireAuth')
 // require auth for all ticket routes
 const router = express.Router()
 
-router.use(requireAuth)
 
 
 // Route for booking a ticket 
 router.post('/book',bookTicket);
 
-// Route for getting all ticket 
+// Route for getting all ticket with authentication
 
-router.get('/',getAllTickets);
+router.get('/',requireAuth, getAllTickets);
 
 
 // Route for getting single ticket 

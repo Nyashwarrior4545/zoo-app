@@ -4,6 +4,9 @@ const express = require('express')
 const mongoose = require('mongoose')
 const userRoute = require('./routes/userRoute')
 const ticketController = require ('./routes/ticketRoute')
+const roomController = require ('./routes/roomRoute')
+const bookingRoute = require ('./routes/bookingRoute')
+
 const app = express()
 
 
@@ -19,6 +22,9 @@ app.use((req, res, next) => {
 
 app.use('/zoo/user', userRoute)
 app.use('/zoo/ticket', ticketController)
+app.use('/zoo/room', roomController)
+app.use('/zoo/room/payment/booking', bookingRoute)
+
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)

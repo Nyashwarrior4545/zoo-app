@@ -5,8 +5,7 @@ import { useTicketContext } from '../hooks/useTicketContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useEffect } from 'react'
 // date fns
-import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-
+import Layout from'./Layout'
 const TicketDetails = () => {
   const { tickets, dispatch } = useTicketContext();
   const { user } = useAuthContext();
@@ -36,7 +35,8 @@ const TicketDetails = () => {
   }, [dispatch, user]);
 
   return (
-    <div>
+    <Layout>
+      <div>
       <h2>Ticket Details</h2>
       <ul>
         {tickets.map(ticket => ( // Map over tickets, not ticket
@@ -53,6 +53,9 @@ const TicketDetails = () => {
         ))}
       </ul>
     </div>
+
+    </Layout>
+    
   );
 };
 

@@ -1,33 +1,41 @@
 .sidebar {
-    margin: 0;
-    margin-top: 30px;/*used it to move it from the top*/
-    padding: 0;
-    width: 200px;
-    background-color: #f1f1f1;
-    position: fixed;
-    height: 100%;
-    overflow: auto;
-  }
-  
-  .sidebar-title {
-    margin-bottom: 10px;
-  }
-  
-  .sidebar-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .sidebar-item {
-    margin-bottom: 10px;
-  }
-  
-  .sidebar-link {
-    text-decoration: none;
-    color: #333;
-  }
-  
-  .content {
-    margin-left: 220px; /* Adjust this value based on the width of your sidebar */
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 220px; /* Increase width to accommodate sidebar content */
+  background-color: #f1f1f1;
+  overflow-y: auto; /* Allow sidebar to scroll if content exceeds height */
+  border-right: 1px solid #ddd; /* Add a border on the right for separation */
+}
+
+.sidebar-header {
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+}
+
+.sidebar-title {
+  margin: 0;
+}
+
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-item {
+  margin-bottom: 10px;
+}
+
+.sidebar-link {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: #333;
+}
+
+.content {
+  margin-left: 220px; /* Adjust this value based on the width of your sidebar */
+}

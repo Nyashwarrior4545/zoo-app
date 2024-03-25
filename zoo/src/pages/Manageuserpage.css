@@ -1,0 +1,16 @@
+.content {
+    margin-top: 60px; /* Adjust this value based on the width of your sidebar plus some additional spacing */
+  }
+
+  .custom-select {
+    display: inline-block;
+    width: 200px;
+    height: 35px;
+    padding: .375rem .75rem;
+    color: #495057;
+    vertical-align: middle;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }

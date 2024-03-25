@@ -1,0 +1,48 @@
+.animals-page {
+    padding-top: -1px; /* Adjust this value based on your header height */
+    padding-bottom: 60px; /* Adjust this value based on your footer height */
+  }
+  
+  .massive-image-section {
+    position: relative;
+    height: 450px; /* Adjust this value based on your image height */
+    background-image: url('../images_animals/Tiger-1.jpg'); /* Replace with your image URL */
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .image-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+  }
+  
+  .fun-facts-section {
+    text-align: center;
+    padding: 20px 0;
+  }
+  
+  .events-section {
+    text-align: center;
+    padding: 20px 0;
+  }
+  
+  .events {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  .event {
+    cursor: pointer;
+  }
+  
+  .event img {
+    width: 200px; /* Adjust this value based on your image size */
+    height: 150px; /* Adjust this value based on your image size */
+    margin-bottom: 10px;
+  }
+  

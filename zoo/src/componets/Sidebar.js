@@ -1,14 +1,35 @@
-import { Link } from 'react-router-dom'; // import the Link component
-import { useAuthContext } from '../hooks/useAuthContext';
-import './Sidebar.css'
+import React from 'react';
+import { Link } from 'react-router-dom';
+// import { useAuthContext } from '../hooks/useAuthContext';
+import './Sidebar.css';
+
 const Sidebar = () => {
   return (
-    <div className="sidebar" style={{ position: 'fixed', zIndex: 1000, left: 0, top: 0 }}>
-      <h2 className="sidebar-title">Navigation</h2>
+    <div className="sidebar">
+      <div className="sidebar-header">
+        <h2 className="sidebar-title">Navigation</h2>
+      </div>
       <ul className="sidebar-list">
         <li className="sidebar-item">
-          <Link to="/home" className="sidebar-link">Home</Link><br />
+          <Link to="/home" className="sidebar-link">Home</Link>
+        </li>
+        <li className="sidebar-item">
           <Link to="/tickets" className="sidebar-link">View Tickets</Link>
+        </li>
+        <li className="sidebar-item">
+          <Link to="/" className="sidebar-link">Animals</Link>
+        </li>
+        <li className="sidebar-item">
+          <Link to="/manageuser" className="sidebar-link">Manage User</Link>
+        </li>
+        <li className="sidebar-item">
+          <Link to="/bookroom" className="sidebar-link">Book Room</Link>
+        </li>
+        <li className="sidebar-item">
+          <Link to="/facilities" className="sidebar-link">Facilities and attraction</Link>
+        </li>
+        <li className="sidebar-item">
+          <Link to="/education" className="sidebar-link">Education Vist</Link>
         </li>
       </ul>
     </div>

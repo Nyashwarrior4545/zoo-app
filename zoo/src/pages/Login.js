@@ -1,41 +1,47 @@
-import {useState} from 'react';
-import  {useLogin} from '../hooks/useLogin'
+import React, { useState } from 'react';
+import { useLogin } from '../hooks/useLogin';
+import { Card, Form, Button, Container, Row, Col } from 'react-bootstrap';
 
-
-const Login = () =>{
+const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const {login, error, isLoading} = useLogin('')
+    const { login, error, isLoading } = useLogin('');
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-
-        console.log('Email:', email)
-        console.log('Password:', password)
-        await login(email, password)
-    }
+        e.preventDefault();
+        await login(email, password);
+    };
 
     return (
-        <form className='login' onSubmit={handleSubmit}>
-            <h3>Login</h3>
+        <Container className="vh-100 d-flex justify-content-center align-items-center">
+            <Row>
+                <Col md={6}>
+                    <Card style={{ width: '400px' }}> {/* Set a fixed width for the card */}
+                        <Card.Body>
+                            <Card.Title>Login</Card.Title>
+                            <Form onSubmit={handleSubmit}>
+                                <Form.Group controlId="formEmail">
+                                    <Form.Label>Email address</Form.Label>
+                                    <Form.Control style = {{marginBottom: '20px'}} type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                                </Form.Group>
 
-            <label> Email</label>
-            <input type='email'
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            />
+                                <Form.Group controlId="formPassword">
+                                    <Form.Label>Password</Form.Label>
+                                    <Form.Control style = {{marginBottom: '20px'}} type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                                </Form.Group>
 
-            <label> Password</label>
-            <input type='password'
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            />
+                                <Button variant="primary" type="submit" disabled={isLoading}>
+                                    Login
+                                </Button>
 
-            <button disabled = {isLoading} >log in</button>
-            {error && <div className='error'>{error}</div>}
-
-        </form>
-    )
-}
+                                {error && <div className='error'>{error}</div>}
+                            </Form>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
+    );
+};
 
 export default Login;
