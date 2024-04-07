@@ -1,0 +1,28 @@
+/* CSS file */
+
+.footer {
+  display: flex;
+  justify-content: space-between; /* Evenly distribute items */
+  align-items: center; /* Center items vertically */
+  background-color: #333; /* Change the background color as desired */
+  color: #fff; /* Change the text color as desired */
+  padding: 20px; /* Adjust the padding as desired */
+  position: fixed;
+  bottom: 0;
+  margin-left: 220px;
+  width: 100%; /* Adjust width to leave space for sidebar */
+  border-top: 1px solid #e9ecef;
+}
+
+.footer p {
+  margin: 0; /* Remove default margin for <p> element */
+}
+
+.footer-link {
+  color: #fff; /* Change the link color as desired */
+  text-decoration: none; /* Remove underline from links */
+}
+
+.footer-link:hover {
+  text-decoration: underline; /* Add underline on hover */
+}

@@ -1,5 +1,7 @@
 //ticketModels
 
+
+
 const mongoose = require('mongoose');
 const validator = require('validator');
 
@@ -8,34 +10,42 @@ const Schema = mongoose.Schema;
 
 const ticketSchema = new Schema({
     date: {
-        type: Date,
-        required: true
+      type: Date,
+      required: true
     },
     Type: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     Price: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true
     },
     cardNumber: {
-        type: String,
-        required: true
+      type: String,
+      required: [true, 'Card number is required']
     },
     expiryDate: {
-        type: String,
-        required: true
+      type: String,
+      required: [true, 'Expiry date is required']
     },
     CVV: {
-        type: String,
-        required: true
+      type: String,
+      required: [true, 'CVV is required']
     },
     cardName: {
-        type: String,
-        required: true
+      type: String,
+      required: [true, 'Card name is required']
+    },
+    bookingCode: {
+      type: String,
+      required: [true, 'Booking code is required']
+    },
+    ticketsSold: {
+      type: Number,
+      required: true, 
     }
-});
+  });
 
 // Static method for validating the ticket details
 ticketSchema.statics.validateTicketDetails = function(cardNumber, expiryDate, CVV) {

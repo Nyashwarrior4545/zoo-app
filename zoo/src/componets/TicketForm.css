@@ -6,14 +6,29 @@
     align-items: center; /* Center vertically */
     height: 100vh; /* Set the height to 100% of the viewport height */
   }
+
+  .ticket-form-container {
+    display: flex;
+    flex-direction: row; /* Display calendar and form side by side */
+    align-items: flex-start; /* Align items to the top */
+  }
   
+  .calendar-container {
+    margin-left: 20px; /* Adjust the margin between calendar and form */
+
+   
+   
+    margin-right: 20px; /* Adjust the margin between calendar and form */
+  }
+  
+
   .ticket-form {
     padding: 15px;
     border: 1px solid #ccc;
     width: 500px;
     border-radius: 5px;
-  }
-  
+  } 
+   
   /* Rest of your styles remain the same */
   
   
@@ -33,15 +48,7 @@
   .ticket-input.error {
     border-color: red;
   }
-  
-  .ticket-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
+
   
   .ticket-button:hover {
     background-color: #0056b3;

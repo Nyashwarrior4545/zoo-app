@@ -29,7 +29,10 @@ const bookingSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Card name is required']
   },
-  // Other booking details
+  bookingCode: {
+    type: String,
+    required: true
+  }
 });
 
 

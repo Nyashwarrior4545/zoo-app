@@ -4,10 +4,10 @@ import { BookingContext } from '../context/bookingContext';
 import { Button, Card, Alert,Form  } from 'react-bootstrap';
 import { useAuthContext } from '../hooks/useAuthContext'; // Import the useAuthContext hook
 
+
 const BookRoomPage = () => {
     const { dispatch } = useContext(BookingContext);
     const { user } = useAuthContext(); // Get the user object from the authentication context
-    console.log('User:', user); // Add this console.log to check if the user is fetched correctly
 
     const [formData, setFormData] = useState({
         userId: user ? user._id : null,
@@ -19,6 +19,7 @@ const BookRoomPage = () => {
     });
     const [rooms, setRooms] = useState([]);
     const [error, setError] = useState(null);
+    const [bookingCode, setBookingCode] = useState(null); // State to store the booking code
 
     useEffect(() => {
         // Fetch rooms data from the server
@@ -55,23 +56,8 @@ const BookRoomPage = () => {
             if (response.ok) {
                 dispatch({ type: 'CREATE_BOOKING', payload: data });
                 setFormData({ userId: user ? user._id : null, roomId: '', cardNumber: '', expiryDate: '', cvv: '', cardName: '' }); // Reset formData after submission
-                alert('Room successfully booked!'); // Display success message
-    
-                // Fetch rooms data again to update the list
-                const fetchUpdatedRooms = async () => {
-                    try {
-                        const response = await fetch('/zoo/room/getallroom');
-                        const data = await response.json();
-                        if (response.ok) {
-                            setRooms(data); // Set the rooms state with the fetched data
-                        } else {
-                            setError(data.error); // Set error message if request fails
-                        }
-                    } catch (error) {
-                        setError('Error fetching rooms'); // Set error message if there's a network error
-                    }
-                };
-                fetchUpdatedRooms();
+                setBookingCode(data.bookingCode); // Set the booking code received from the server
+                setError(null); // Reset error state
             } else {
                 setError(data.error); // Set error message if request fails
             }
@@ -95,6 +81,7 @@ const BookRoomPage = () => {
             <div>
                 <h1>Book a Room</h1>
                 {error && <Alert variant="danger">{error}</Alert>}
+                {bookingCode && <Alert variant="success">Your booking code is: {bookingCode}</Alert>} {/* Display booking code */}
                 <div className="card-container">
                     {rooms.map(room => (
                         <Card key={room._id} style={{ width: '18rem' }}>

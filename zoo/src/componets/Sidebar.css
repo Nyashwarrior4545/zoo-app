@@ -4,15 +4,16 @@
   left: 0;
   height: 100%;
   width: 220px; /* Increase width to accommodate sidebar content */
-  background-color: #f1f1f1;
-  overflow-y: auto; /* Allow sidebar to scroll if content exceeds height */
-  border-right: 1px solid #ddd; /* Add a border on the right for separation */
+  background-color: #F7E5C8;
+  overflow-y: auto;
+  font-weight: 500;
+
 }
 
 .sidebar-header {
   padding: 10px;
-  background-color: #333;
-  color: #fff;
+  background-color: #F7E5C8;
+  color: #652b53;
 }
 
 .sidebar-title {
@@ -23,6 +24,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
+
 }
 
 .sidebar-item {
@@ -33,7 +35,9 @@
   display: block;
   padding: 10px;
   text-decoration: none;
-  color: #333;
+  color: #652b53;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 .content {

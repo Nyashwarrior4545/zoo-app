@@ -4,6 +4,8 @@ import giraffeImage from '../images_animals/giraffe.jpeg';
 import parrotImage from '../images_animals/parrot.webp';
 import redPandaImage from '../images_animals/red panda.jpg';
 import Layout from '../componets/Layout';
+import { Link } from 'react-router-dom';
+
 
 const Animals = () => {
   return (
@@ -25,15 +27,19 @@ const Animals = () => {
         <div className="fun-facts">
           <div className="fun-fact">
             <h3>Giraffes</h3>
-            <p>Giraffes have long necks that can reach up to 6 feet in length!</p>
+            <p>"Giraffes have long necks that can reach<br/>
+             up to 6 feet in length!"</p>
           </div>
           <div className="fun-fact">
             <h3>Parrots</h3>
-            <p>Parrots are known for their ability to mimic human speech and other sounds.</p>
+            <p>"Parrots are known for their ability to<br/>
+             mimic human speech
+             and other sounds."</p>
           </div>
           <div className="fun-fact">
             <h3>Red Pandas</h3>
-            <p>Red pandas are not closely related to giant pandas but share a similar name.</p>
+            <p>"Red pandas are not closely related to giant<br/>
+             pandas but share a similar name."</p>
           </div>
         </div>
       </section>
@@ -43,16 +49,28 @@ const Animals = () => {
         <h2>Events</h2>
         <div className="events">
           <div className="event">
-            <img src={giraffeImage} alt="Event 1" />
+            <Link to = "/home">
+              <img src={giraffeImage} alt="Event 1" />
+            </Link>
             <p>Event 1 Name</p>
+
+
           </div>
           <div className="event">
-            <img src={parrotImage} alt="Event 2" />
+            <Link to = "/home">
+              <img src={parrotImage} alt="Event 2" />
+            </Link>
             <p>Event 2 Name</p>
+
+
           </div>
           <div className="event">
-            <img src={redPandaImage} alt="Event 3" />
+            <Link to = "/home">
+              <img src={redPandaImage} alt="Event 3" />
+            </Link>
             <p>Event 3 Name</p>
+
+
           </div>
         </div>
       </section>

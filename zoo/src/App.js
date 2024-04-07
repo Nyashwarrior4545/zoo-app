@@ -10,6 +10,8 @@ import Manageuser from './pages/ManageUserPage';
 import BookRoom from './pages/BookRoomPage';
 import FacilitiesPage from './pages/FacilitiesPage';
 import EducationPage from './pages/EducationPage';
+import Termspage from './pages/Termspage';
+import Policy from './pages/Policy';
 
 
 
@@ -17,6 +19,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import TicketDetails from './componets/TicketDetails';
 import { useAuthContext } from './hooks/useAuthContext';
+import AccessibilityPage from './pages/Acess';
 
 
 
@@ -63,6 +66,22 @@ const {user, isAdmin} = useAuthContext();
               path='/education'
               element={<EducationPage />}
             />
+
+            <Route
+              path='/terms'
+              element={<Termspage />}
+            />
+
+            <Route
+              path='/policy'
+              element={<Policy />}
+            />
+
+            <Route
+              path='/access'
+              element={<AccessibilityPage />}
+            />
+
             <Route
               path='/manageuser'
               element={user && isAdmin ? <Manageuser /> : <Navigate to="/login" />} 

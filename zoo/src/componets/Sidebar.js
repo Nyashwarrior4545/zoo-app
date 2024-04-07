@@ -7,15 +7,17 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <h2 className="sidebar-title">Navigation</h2>
+        <h2 className="sidebar-title">
+          <strong>
+            Riget Zoo
+          </strong>
+        </h2>
       </div>
       <ul className="sidebar-list">
         <li className="sidebar-item">
           <Link to="/home" className="sidebar-link">Home</Link>
         </li>
-        <li className="sidebar-item">
-          <Link to="/tickets" className="sidebar-link">View Tickets</Link>
-        </li>
+
         <li className="sidebar-item">
           <Link to="/" className="sidebar-link">Animals</Link>
         </li>
