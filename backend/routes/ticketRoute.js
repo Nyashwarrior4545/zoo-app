@@ -6,6 +6,7 @@ const { bookTicket,
         getsingleticket} =require('../controller/ticketController')
 
 const requireAuth = require( '../middleware/requireAuth')
+const requireAdmin = require( '../middleware/requireAdmin')
 
 // require auth for all ticket routes
 const router = express.Router()
@@ -17,7 +18,7 @@ router.post('/book',bookTicket);
 
 // Route for getting all ticket with authentication
 
-router.get('/',requireAuth, getAllTickets);
+router.get('/',requireAdmin, getAllTickets);
 
 
 // Route for getting single ticket 

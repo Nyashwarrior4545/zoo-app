@@ -3,7 +3,8 @@ import Layout from '../componets/Layout';
 import { BookingContext } from '../context/bookingContext';
 import { Button, Card, Alert,Form  } from 'react-bootstrap';
 import { useAuthContext } from '../hooks/useAuthContext'; // Import the useAuthContext hook
-
+import './BookRoomPage.css'; // Import CSS file for styling
+import giraffeImage from '../images_animals/giraffe.jpeg';
 
 const BookRoomPage = () => {
     const { dispatch } = useContext(BookingContext);
@@ -68,24 +69,29 @@ const BookRoomPage = () => {
     };
     
     const handleRoomSelect = (roomId) => {
-        setFormData({ ...formData, roomId }); // Update roomId in formData when a room is selected
+        // Toggle room selection
+        if (formData.roomId === roomId) {
+            setFormData({ ...formData, roomId: '' }); // Clear roomId to unselect the room
+        } else {
+            setFormData({ ...formData, roomId }); // Update roomId in formData when a room is selected
+        }
     };
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-
     return (
         <Layout>
-            <div>
+            <div className='roompage'>
                 <h1>Book a Room</h1>
                 {error && <Alert variant="danger">{error}</Alert>}
                 {bookingCode && <Alert variant="success">Your booking code is: {bookingCode}</Alert>} {/* Display booking code */}
-                <div className="card-container">
+                <div className="room-container">
                     {rooms.map(room => (
                         <Card key={room._id} style={{ width: '18rem' }}>
-                           <Card.Body>
+                            <Card.Img variant="top" src={giraffeImage} />
+                            <Card.Body>
                                 <Card.Title>{room.title}</Card.Title>
                                 <Card.Text>{room.detail}</Card.Text>
                                 <Card.Text>{room.available ? 'Available' : 'Unavailable'}</Card.Text>
@@ -97,59 +103,60 @@ const BookRoomPage = () => {
                                 >
                                     {formData.roomId === room._id ? "Unselect" : "Select"}
                                 </Button>
+                                {formData.roomId === room._id && (
+                                    <div className="form-container">
+                                        <Form onSubmit={handleSubmit}>
+                                            <Form.Group controlId="cardNumber">
+                                                <Form.Label>Card Number</Form.Label>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="cardNumber"
+                                                    value={formData.cardNumber}
+                                                    onChange={handleChange}
+                                                    placeholder="Enter card number"
+                                                />
+                                            </Form.Group>
+                                            <Form.Group controlId="expiryDate">
+                                                <Form.Label>Expiry Date</Form.Label>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="expiryDate"
+                                                    value={formData.expiryDate}
+                                                    onChange={handleChange}
+                                                    placeholder="MM/YY"
+                                                />
+                                            </Form.Group>
+                                            <Form.Group controlId="cvv">
+                                                <Form.Label>CVV</Form.Label>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="cvv"
+                                                    value={formData.cvv}
+                                                    onChange={handleChange}
+                                                    placeholder="Enter CVV"
+                                                />
+                                            </Form.Group>
+                                            <Form.Group controlId="cardName">
+                                                <Form.Label>Card Name</Form.Label>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="cardName"
+                                                    value={formData.cardName}
+                                                    onChange={handleChange}
+                                                    placeholder="Enter card name"
+                                                />
+                                            </Form.Group>
+                                            <Button variant="primary" type="submit">Book Room</Button>
+                                        </Form>
+                                    </div>
+                                )}
                             </Card.Body>
                         </Card>
                     ))}
                 </div>
-                {formData.roomId && (
-                    <Form onSubmit={handleSubmit}>
-                        <Form.Group controlId="cardNumber">
-                            <Form.Label>Card Number</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="cardNumber"
-                                value={formData.cardNumber}
-                                onChange={handleChange}
-                                placeholder="Enter card number"
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="expiryDate">
-                            <Form.Label>Expiry Date</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="expiryDate"
-                                value={formData.expiryDate}
-                                onChange={handleChange}
-                                placeholder="MM/YY"
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="cvv">
-                            <Form.Label>CVV</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="cvv"
-                                value={formData.cvv}
-                                onChange={handleChange}
-                                placeholder="Enter CVV"
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="cardName">
-                            <Form.Label>Card Name</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="cardName"
-                                value={formData.cardName}
-                                onChange={handleChange}
-                                placeholder="Enter card name"
-                            />
-                        </Form.Group>
-                        <Button variant="primary" type="submit">Book Room</Button>
-                    </Form>
-                )}
             </div>
         </Layout>
     );
 };
-
 
 export default BookRoomPage;

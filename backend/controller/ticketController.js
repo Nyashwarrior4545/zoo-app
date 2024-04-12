@@ -14,7 +14,6 @@ const generateBookingCode = () => {
 };
 
 // Controller function for booking a ticket
-// Controller function for booking a ticket
 const bookTicket = async (req, res) => {
     try {
         const { date, Type, Price, cardNumber, expiryDate, CVV, cardName } = req.body; // Extracting data from the request body
@@ -67,13 +66,12 @@ const bookTicket = async (req, res) => {
 
 const getAllTickets = async (req, res) => {
     try {
-        // Fetch all tickets from the database
-        const tickets = await Ticket.find();
-
+        const userId = req.user.id; // Get the user ID from the authenticated user
+        const tickets = await Ticket.find({ userId }); // Find tickets associated with the user
         res.status(200).json({ tickets });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Error fetching tickets' });
+        res.status(500).json({ error: 'Error fetching user tickets' });
     }
 }
 

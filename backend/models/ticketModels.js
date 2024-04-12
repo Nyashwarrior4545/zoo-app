@@ -9,6 +9,10 @@ const validator = require('validator');
 const Schema = mongoose.Schema;
 
 const ticketSchema = new Schema({
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
     date: {
       type: Date,
       required: true

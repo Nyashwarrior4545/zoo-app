@@ -6,6 +6,7 @@ import './TicketForm.css'
 import Calendar from 'react-calendar'; // Import the calendar component
 import 'react-calendar/dist/Calendar.css'; // Import calendar CSS
 import { Form, Button, Alert } from "react-bootstrap"; // Import Alert component from react-bootstrap
+import TicketTable from './TicketTable';
 
 
 const TicketForm = () => {
@@ -214,6 +215,8 @@ const TicketForm = () => {
           {error && <div className="ticket-error">{error}</div>}
         </Form>
       </div>
+      <TicketTable />
+
     </div>
   );
 };
