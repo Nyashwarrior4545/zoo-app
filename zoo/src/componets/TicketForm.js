@@ -6,7 +6,7 @@ import './TicketForm.css'
 import Calendar from 'react-calendar'; // Import the calendar component
 import 'react-calendar/dist/Calendar.css'; // Import calendar CSS
 import { Form, Button, Alert } from "react-bootstrap"; // Import Alert component from react-bootstrap
-import TicketTable from './TicketTable';
+
 
 
 const TicketForm = () => {
@@ -45,19 +45,25 @@ const TicketForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user) {
-      setError("You must be logged in");
-      return;
-    }
-    const ticket = {
-      date,
-      Type,
-      Price,
-      cardNumber,
-      expiryDate,
-      CVV,
-      cardName
-    };
+    try {
+      console.log("User:", user);
+      if (!user || typeof user !== 'object' || !user._id) {
+        throw new Error("User or user ID is missing or invalid");
+      }
+  
+      const ticket = {
+        userId: user._id,
+        date,
+        Type,
+        Price,
+        cardNumber,
+        expiryDate,
+        CVV,
+        cardName
+      };
+    // The rest of your code remains the same...
+    // console.log("ticket: ",ticket)
+    // console.log("User: ",user)
     const response = await fetch("/zoo/ticket/book", {
       method: "POST",
       body: JSON.stringify(ticket),
@@ -67,7 +73,7 @@ const TicketForm = () => {
       }
     });
     const json = await response.json();
-    
+  
     // Log the server response
     console.log("Server response:", json);
   
@@ -88,12 +94,17 @@ const TicketForm = () => {
       console.log("Server response:", json);
       if (json.ticket && json.ticket.bookingCode) {
         setBookingCode(json.ticket.bookingCode);
-  console.log("Booking code:", json.ticket.bookingCode);
-}
-
+        console.log("Booking code:", json.ticket.bookingCode);
+      }
+  
       dispatch({ type: "CREATE_TICKET", payload: json });
     }
-};
+  } catch (error) {
+    console.error("Error occurred:", error.message);
+    setError(error.message);
+  }
+  };
+  
   return (
     
     <div className="page-container">
@@ -215,7 +226,6 @@ const TicketForm = () => {
           {error && <div className="ticket-error">{error}</div>}
         </Form>
       </div>
-      <TicketTable />
 
     </div>
   );

@@ -30,64 +30,23 @@ const {user, isAdmin} = useAuthContext();
       <BrowserRouter>
 
         <div className="pages">
-          <Routes>
-            
-            <Route 
-              path="/home"
-              element={<TicketPage />}
-            />
-            <Route 
-              path="/login" 
-              element={!user? <Login />: <Navigate to= "/"/>} 
-            />
-            <Route 
-              path="/register" 
-              element={!user? <Register />: <Navigate to = "/"/>} 
-            />
-            <Route 
-              path="/tickets" 
-              element={user?<TicketDetails />: <Navigate to= "/login"  />} 
-            />
-            <Route
-              path='/'
-              element={<Animals />}
-            />
-            <Route
-              path='/bookroom'
-              element={<BookRoom />}
-            />
+        <Routes>
+          <Route path="/home" element={<TicketPage />} />
+          <Route path="/" element={<Animals />} />
+          <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+          <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />
+          <Route path="/tickets" element={user ? <TicketDetails /> : <Navigate to="/login" />} />
+          <Route path="/bookroom" element={<BookRoom />} />
+          <Route path="/facilities" element={<FacilitiesPage />} />
+          <Route path="/education" element={<EducationPage />} />
+          <Route path="/terms" element={<Termspage />} />
+          <Route path="/policy" element={<Policy />} />
+          <Route path="/access" element={<AccessibilityPage />} />
+          <Route path="/manageuser" element={user && isAdmin ? <Manageuser /> : <Navigate to="/login" />} />
+          {/* Catch-all route */}
+          <Route path="*" element={<Navigate to="/tickets" />} />
+        </Routes>
 
-            <Route
-              path='/facilities'
-              element={<FacilitiesPage />}
-            />
-
-            <Route
-              path='/education'
-              element={<EducationPage />}
-            />
-
-            <Route
-              path='/terms'
-              element={<Termspage />}
-            />
-
-            <Route
-              path='/policy'
-              element={<Policy />}
-            />
-
-            <Route
-              path='/access'
-              element={<AccessibilityPage />}
-            />
-
-            <Route
-              path='/manageuser'
-              element={user && isAdmin ? <Manageuser /> : <Navigate to="/login" />} 
-            />
-
-          </Routes>
         </div>
       </BrowserRouter>
     </div>

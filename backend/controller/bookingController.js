@@ -35,6 +35,7 @@ const createBooking = async (req, res) => {
 
     res.status(201).json(booking);
   } catch (error) {
+    console.error('Error creating booking:', error);
     res.status(400).json({ error: error.message });
   }
 };
@@ -55,6 +56,7 @@ const getBookingsByUserId = async (req, res) => {
     const bookings = await Booking.find({ userId });
     res.status(200).json(bookings);
   } catch (error) {
+    console.error('Error fetching bookings by user ID:', error);
     res.status(500).json({ error: error.message });
   }
 };

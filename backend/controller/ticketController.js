@@ -16,8 +16,7 @@ const generateBookingCode = () => {
 // Controller function for booking a ticket
 const bookTicket = async (req, res) => {
     try {
-        const { date, Type, Price, cardNumber, expiryDate, CVV, cardName } = req.body; // Extracting data from the request body
-
+        const { userId, date, Type, Price, cardNumber, expiryDate, CVV, cardName } = req.body; // Extracting data from the request body
         // Generate a booking code
         const bookingCode = generateBookingCode();
 
@@ -39,6 +38,7 @@ const bookTicket = async (req, res) => {
 
         // Creating a new ticket instance
         const ticket = new Ticket({
+            userId, // Include the userId from the authenticated user
             date,
             Type,
             Price,
@@ -62,6 +62,7 @@ const bookTicket = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
+
 
 
 const getAllTickets = async (req, res) => {
@@ -96,8 +97,70 @@ const getsingleticket = async (req, res) => {
     }
 };
 
+const deleteTicket = async (req, res) => {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'No such ticket' });
+    }
+
+    try {
+        const ticket = await Ticket.findById(id);
+
+        if (!ticket) {
+            return res.status(404).json({ error: 'No such ticket' });
+        }
+
+        await Ticket.findByIdAndDelete(id);
+
+        res.status(200).json({ message: 'Ticket deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error deleting ticket' });
+    }
+};
+
+const updateTicket = async (req, res) => {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'No such ticket' });
+    }
+
+    try {
+        const ticket = await Ticket.findById(id);
+
+        if (!ticket) {
+            return res.status(404).json({ error: 'No such ticket' });
+        }
+
+        const { date, Type, Price, cardNumber, expiryDate, CVV, cardName } = req.body;
+
+        // Validating ticket details
+        Ticket.validateTicketDetails(cardNumber, expiryDate, CVV);
+
+        const updatedTicket = await Ticket.findByIdAndUpdate(id, {
+            date,
+            Type,
+            Price,
+            cardNumber,
+            expiryDate,
+            CVV,
+            cardName,
+        }, { new: true });
+
+        res.status(200).json({ message: 'Ticket updated successfully', updatedTicket });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error updating ticket' });
+    }
+};
+
+
 module.exports = {
     bookTicket,
     getAllTickets,
-    getsingleticket
+    getsingleticket,
+    deleteTicket,
+    updateTicket
 };

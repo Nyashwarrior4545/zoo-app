@@ -20,7 +20,6 @@ const roomSchema = new Schema({
     type: Boolean,
     default: true
   },
-  imageUrl: String
 });
 
 

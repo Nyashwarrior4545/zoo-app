@@ -1,85 +1,87 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import Layout from '../componets/Layout';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { useBookingContext } from '../hooks/useBookingContext';
+import { Table, Button } from 'react-bootstrap';
 
-const TicketTable = () => {
-    const { user } = useAuthContext();
-    const [tickets, setTickets] = useState([]);
 
-    useEffect(() => {
-        const fetchUserTickets = async () => {
-            try {
-                const response = await fetch("/zoo/ticket/", {
-                    headers: {
-                        Authorization: `Bearer ${user.token}`
-                    }
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    setTickets(data.tickets);
-                } else {
-                    // Handle error
-                }
-            } catch (error) {
-                console.error("Error fetching user tickets:", error);
-            }
-        };
+const ManageBookingsPage = () => {
+  const { bookings, dispatch } = useBookingContext();
+  const { user } = useAuthContext();
+  const [editBooking, setEditBooking] = useState(null);
 
-        if (user) {
-            fetchUserTickets();
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        if (user?.token) {
+          const userId = user._id;
+          const response = await fetch(`/zoo/room/payment/booking/${userId}`, {
+            headers: { 'Authorization': `Bearer ${user.token}` }
+          });
+
+          const json = await response.json();
+
+          if (response.ok) {
+            dispatch({ type: 'SET_BOOKINGS', payload: json });
+          }
         }
-    }, [user]);
-
-    const handleEdit = (ticketId) => {
-        // Implement edit functionality
+      } catch (error) {
+        console.error('Error fetching bookings:', error);
+      }
     };
 
-    const handleDelete = async (ticketId) => {
-        try {
-            const response = await fetch(`/zoo/ticket/${ticketId}`, {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${user.token}`
-                }
-            });
-            if (response.ok) {
-                // Remove the deleted ticket from the local state
-                setTickets(tickets.filter(ticket => ticket._id !== ticketId));
-            } else {
-                // Handle error
-            }
-        } catch (error) {
-            console.error("Error deleting ticket:", error);
-        }
-    };
+    fetchBookings();
+  }, [dispatch, user]);
 
-    return (
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Type</th>
-                        <th>Price</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tickets.map(ticket => (
-                        <tr key={ticket._id}>
-                            <td>{ticket.date}</td>
-                            <td>{ticket.Type}</td>
-                            <td>{ticket.Price}</td>
-                            <td>
-                                <Button onClick={() => handleEdit(ticket._id)}>Edit</Button>
-                                <Button onClick={() => handleDelete(ticket._id)}>Delete</Button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    );
+  const handleEditBooking = (booking) => {
+    setEditBooking(booking);
+  };
+
+  const handleUpdateBooking = async (updatedBooking) => {
+    // Implement update logic similar to user update logic
+  };
+
+  const handleDeleteBooking = async (bookingId) => {
+    // Implement delete logic similar to user delete logic
+  };
+
+  return (
+    <Layout>
+      <div>
+        <h1>Manage Bookings</h1>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Room</th>
+              <th>CVV</th>
+              <th>Card Number</th>
+              <th>Expiry Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {bookings && bookings.map(booking => (
+              <tr key={booking._id}>
+                {/* Display user's email */}
+                <td>{user.email}</td>
+                <td>{booking.roomId}</td>
+                <td>{booking.cvv}</td>
+                <td>{booking.cardNumber}</td>
+                <td>{booking.expiryDate}</td>
+                <td>
+                  <Button variant="primary" onClick={() => handleEditBooking(booking)}>Edit</Button>{' '}
+                  <Button variant="danger" onClick={() => handleDeleteBooking(booking._id)}>Delete</Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+        {/* Add form for editing booking */}
+        {/* Add form for creating new booking */}
+      </div>
+    </Layout>
+  );
 };
 
-export default TicketTable;
+export default ManageBookingsPage;

@@ -25,6 +25,9 @@ const Sidebar = () => {
           <Link to="/manageuser" className="sidebar-link">Manage User</Link>
         </li>
         <li className="sidebar-item">
+          <Link to="/tickets" className="sidebar-link">Manage Bookings</Link>
+        </li>
+        <li className="sidebar-item">
           <Link to="/bookroom" className="sidebar-link">Book Room</Link>
         </li>
         <li className="sidebar-item">
