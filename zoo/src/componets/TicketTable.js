@@ -3,12 +3,14 @@ import Layout from '../componets/Layout';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useBookingContext } from '../hooks/useBookingContext';
 import { Table, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 
 const ManageBookingsPage = () => {
   const { bookings, dispatch } = useBookingContext();
   const { user } = useAuthContext();
   const [editBooking, setEditBooking] = useState(null);
+  const [editedBooking, setEditedBooking] = useState(null); // State to store edited booking details
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -35,14 +37,64 @@ const ManageBookingsPage = () => {
 
   const handleEditBooking = (booking) => {
     setEditBooking(booking);
+    // Set initial edited booking details excluding room title, room price, and user
+    setEditedBooking({
+      cvv: booking.cvv,
+      cardNumber: booking.cardNumber,
+      expiryDate: booking.expiryDate
+    });
   };
 
-  const handleUpdateBooking = async (updatedBooking) => {
-    // Implement update logic similar to user update logic
+  const handleUpdateBooking = async () => {
+    try {
+      const response = await fetch(`/zoo/room/payment/booking/${editBooking._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
+        body: JSON.stringify(editedBooking)
+      });
+
+      if (response.ok) {
+        // Update local bookings state
+        const updatedBookings = bookings.map(booking =>
+          booking._id === editBooking._id ? { ...booking, ...editedBooking } : booking
+        );
+        dispatch({ type: 'SET_BOOKINGS', payload: updatedBookings });
+        setEditBooking(null);
+      } else {
+        console.error('Error updating booking:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error updating booking:', error);
+    }
   };
 
   const handleDeleteBooking = async (bookingId) => {
-    // Implement delete logic similar to user delete logic
+    try {
+      const response = await fetch(`/zoo/room/payment/booking/${bookingId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        }
+      });
+
+      if (response.ok) {
+        // Remove deleted booking from local state
+        const updatedBookings = bookings.filter(booking => booking._id !== bookingId);
+        dispatch({ type: 'SET_BOOKINGS', payload: updatedBookings });
+      } else {
+        console.error('Error deleting booking:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deleting booking:', error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedBooking({ ...editedBooking, [name]: value });
   };
 
   return (
@@ -53,7 +105,8 @@ const ManageBookingsPage = () => {
           <thead>
             <tr>
               <th>User</th>
-              <th>Room</th>
+              <th>Room Title</th>
+              <th>Room Price</th>
               <th>CVV</th>
               <th>Card Number</th>
               <th>Expiry Date</th>
@@ -63,21 +116,59 @@ const ManageBookingsPage = () => {
           <tbody>
             {bookings && bookings.map(booking => (
               <tr key={booking._id}>
-                {/* Display user's email */}
                 <td>{user.email}</td>
-                <td>{booking.roomId}</td>
-                <td>{booking.cvv}</td>
-                <td>{booking.cardNumber}</td>
-                <td>{booking.expiryDate}</td>
+                <td>{booking.roomId.title}</td>
+                <td>{booking.roomId.price}</td>
+                <td>{editBooking && editBooking._id === booking._id ? (
+                  <input
+                    type="text"
+                    name="cvv"
+                    value={editedBooking.cvv}
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  booking.cvv
+                )}</td>
+                <td>{editBooking && editBooking._id === booking._id ? (
+                  <input
+                    type="text"
+                    name="cardNumber"
+                    value={editedBooking.cardNumber}
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  booking.cardNumber
+                )}</td>
+                <td>{editBooking && editBooking._id === booking._id ? (
+                  <input
+                    type="text"
+                    name="expiryDate"
+                    value={editedBooking.expiryDate}
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  booking.expiryDate
+                )}</td>
                 <td>
-                  <Button variant="primary" onClick={() => handleEditBooking(booking)}>Edit</Button>{' '}
-                  <Button variant="danger" onClick={() => handleDeleteBooking(booking._id)}>Delete</Button>
+                  {editBooking && editBooking._id === booking._id ? (
+                    <>
+                      <Button variant="success" onClick={handleUpdateBooking}>Save</Button>{' '}
+                      <Button variant="secondary" onClick={() => setEditBooking(null)}>Cancel</Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button variant="primary" onClick={() => handleEditBooking(booking)}>Edit</Button>{' '}
+                      <Button variant="danger" onClick={() => handleDeleteBooking(booking._id)}>Delete</Button>
+                      <Link to = '/home'>
+                        <Button>Book Room</Button>
+                      </Link>
+                    </>
+                  )}
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
-        {/* Add form for editing booking */}
         {/* Add form for creating new booking */}
       </div>
     </Layout>

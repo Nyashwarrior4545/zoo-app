@@ -53,7 +53,7 @@ const getBookings = async (req, res) => {
 const getBookingsByUserId = async (req, res) => {
   const userId = req.params.userId;
   try {
-    const bookings = await Booking.find({ userId });
+    const bookings = await Booking.find({ userId }).populate('roomId'); // Populate room details
     res.status(200).json(bookings);
   } catch (error) {
     console.error('Error fetching bookings by user ID:', error);
@@ -61,6 +61,35 @@ const getBookingsByUserId = async (req, res) => {
   }
 };
 
+const updateBooking = async (req, res) => {
+  const bookingId = req.params.bookingId;
+  const updatedBooking = req.body;
+  try {
+    const booking = await Booking.findByIdAndUpdate(bookingId, updatedBooking, { new: true });
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+    res.status(200).json(booking);
+  } catch (error) {
+    console.error('Error updating booking:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
 
-module.exports = { createBooking, getBookings,getBookingsByUserId };
+const deleteBooking = async (req, res) => {
+  const bookingId = req.params.bookingId;
+  try {
+    const deletedBooking = await Booking.findByIdAndDelete(bookingId);
+    if (!deletedBooking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+    res.status(200).json({ message: 'Booking deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting booking:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+module.exports = { createBooking, getBookings,getBookingsByUserId, updateBooking, deleteBooking };
 

@@ -1,0 +1,106 @@
+Home page css and jsx
+TicketPage .jsx
+Book room page .jsx
+managebooking.jsx
+booking route
+booking controller
+
+Version 1 
+Database integration
+.package needed
+.lAYOUT OF THE PAGE CREATED
+.Home page
+
+version 2 
+User authentication
+.User Models
+.middlearw for users
+.login and register functionality created
+. lOGIN AND REGISTER PAGE
+
+version 3
+Ticket booking
+.Ticket Model
+.Ticket Functionality 
+.Ticket Routes
+.ticket page
+
+version 4
+Room Booking
+.room and booking models
+.room and booking functionality
+.room and booking routes
+.room page
+
+version 5
+Manage booking:
+. get users ticket 
+. allow user to edit and delete ticket
+. get user room booking
+. allow user to edit and delte rooms
+. manage ticke table
+. manage room booking table
+
+version 6
+Mange user account
+. allow only admin
+
+. get  all user 
+. edit and delete and register users
+. manage user page
+
+Version 7
+.Education PAGE
+
+version 8
+.FACILITIES PAGE
+
+version 9 
+.Privacy Page
+
+version10
+.Terms and condition
+
+verison 11
+ accessbility page
+
+
+How to go about it:Requirements Phase:
+In this phase, you gather and analyze the requirements for your software. This involves understanding what functionalities and features your application needs to have. Your documentation should include:
+
+A detailed list of requirements, including functional and non-functional requirements.
+Any stakeholder interviews or surveys conducted to gather requirements.
+Analysis of the requirements to ensure they are complete, consistent, and feasible.
+Design Phase:
+Once the requirements are gathered, you design the software solution to meet those requirements. This involves creating architecture diagrams, wireframes, and mockups. Your documentation should include:
+
+Architectural design diagrams showing how different components of the application will interact.
+User interface wireframes or mockups to visualize the user experience.
+Design decisions and justifications, explaining why certain design choices were made.
+Implementation and Test Phase:
+In this phase, you actually code, integrate, and test the software. Your documentation should include:
+
+Code documentation, including comments and documentation strings explaining the purpose of each function and module.
+Test plans outlining how each requirement will be tested to ensure it meets its intended functionality.
+Test results showing the outcome of each test, including any bugs or issues discovered during testing.
+Review Phase:
+The review phase involves evaluating the software, reviewing the requirements, and proposing changes or additions. Your documentation should include:
+
+An evaluation of the software against the requirements to determine if they have been met.
+Any proposed changes or additions to the requirements based on the review.
+A decision on whether to keep the software produced in this phase as a starting point for the next iteration or discard it.
+Version Control:
+Throughout the iterative development process, it's important to use version control effectively. Your documentation should include:
+
+A record of changes made throughout the development stage, including commit messages and version history.
+The rationale behind notable changes made, explaining why certain changes were implemented.
+A clear versioning strategy, ensuring that different versions of the software are properly managed and documented.
+By documenting each phase of the iterative development process in this way, you'll demonstrate a rigorous approach to software development and ensure that your Riget Zoo application meets its requirements effectively.
+
+Things to add aifuwa:
+create a requirement page in vs
+buy ticket and room in the table by adding a button thea links to the respective pages
+apply the discount to the room aswell 
+fix any routes problem
+think about adding a cookie to the application
+think abou replacing the images in the educational page with videos

@@ -8,7 +8,6 @@ import 'react-calendar/dist/Calendar.css'; // Import calendar CSS
 import { Form, Button, Alert } from "react-bootstrap"; // Import Alert component from react-bootstrap
 
 
-
 const TicketForm = () => {
   const { dispatch } = useTicketContext();
   const { user } = useAuthContext();
@@ -34,10 +33,14 @@ const TicketForm = () => {
     setType(selectedType);
     const selectedTicket = ticketTypes.find((ticket) => ticket.type === selectedType);
     if (selectedTicket) {
-      setPrice(selectedTicket.price);
+      // Apply discount if user is logged in
+      const discountedPrice = user ? selectedTicket.price * 0.95 : selectedTicket.price;
+      setPrice(discountedPrice);
+      if (user) {
+        setError("Discount of 5% applied!");
+      }
     }
   };
-
   const handleDateChange = (newDate) => {
     setDate(newDate);
     setShowCalendar(false);

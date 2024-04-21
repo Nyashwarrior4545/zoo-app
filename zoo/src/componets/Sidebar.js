@@ -17,7 +17,6 @@ const Sidebar = () => {
         <li className="sidebar-item">
           <Link to="/home" className="sidebar-link">Home</Link>
         </li>
-
         <li className="sidebar-item">
           <Link to="/" className="sidebar-link">Animals</Link>
         </li>

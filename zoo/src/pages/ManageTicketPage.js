@@ -3,218 +3,165 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../componets/Layout';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useTicketContext } from '../hooks/useTicketContext';
-import { Table, Button, Form,Modal } from 'react-bootstrap';
+import { Table, Button, Form } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 
 const ManageTicketPage = () => {
-    const { user } = useAuthContext();
-    const { tickets, dispatch } = useTicketContext();
-    const [editTicket, setEditTicket] = useState(null);
-    const [editedValues, setEditedValues] = useState({
-      date: '',
-      Type: '',
-      Price: '',
-      cardNumber: '',
-      expiryDate: '',
-      CVV: '',
-      cardName: '',
-      bookingCode: ''
-    });
-    const [showEditModal, setShowEditModal] = useState(false);
-  
-    useEffect(() => {
-      const fetchTickets = async () => {
-        try {
-          if (user?.token) {
-            const userId = user._id;
-            const response = await fetch(`/zoo/ticket/${userId}`, {
-              headers: { 'Authorization': `Bearer ${user.token}` }
-            });
-            const json = await response.json();
-  
-            if (response.ok) {
-              dispatch({ type: 'ADD_TICKET', payload: json.tickets });
-            }
-          }
-        } catch (error) {
-          console.error('Error fetching tickets:', error);
-        }
-      };
-  
-      fetchTickets();
-    }, [dispatch, user]);
-  
-    const handleEditTicket = (ticket) => {
-        setEditTicket(ticket);
-        setEditedValues(ticket);
-        setShowEditModal(true);
-      };
-    
-      const handleChange = (e) => {
-        const { name, value } = e.target;
-        setEditedValues(prevState => ({
-          ...prevState,
-          [name]: value
-        }));
-      };
-    
-      const handleUpdateTicket = async () => {
-        try {
-          const response = await fetch(`/zoo/ticket/${editTicket._id}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${user.token}`
-            },
-            body: JSON.stringify(editedValues)
-          });
-    
-          const data = await response.json();
-    
-          if (response.ok) {
-            console.log('Ticket updated successfully:', data);
-            if (data._id) {
-              dispatch({ type: 'UPDATE_TICKET', payload: data });
-            } else {
-              console.error('Updated ticket data not found:', data);
-            }
-            setEditTicket(null);
-            setShowEditModal(false);
-          } else {
-            console.error('Failed to update ticket:', data.error);
-          }
-        // Close the edit modal
-        setShowEditModal(false);
-        } catch (error) {
-            console.error('Error updating ticket:', error);
-        }
-    };
-    const handleDeleteTicket = async (ticketId) => {
+  const { user } = useAuthContext();
+  const { tickets, dispatch } = useTicketContext();
+  const [editTicket, setEditTicket] = useState(null);
+  const [editedTicket, setEditedTicket] = useState(null);
+
+  useEffect(() => {
+    const fetchTickets = async () => {
       try {
-        const response = await fetch(`/zoo/ticket/${ticketId}`, {
-          method: 'DELETE',
-          headers: { 'Authorization': `Bearer ${user.token}` }
-        });
-  
-        if (response.ok) {
-          dispatch({ type: 'DELETE_TICKET', payload: ticketId });
-        } else {
-          console.error('Failed to delete ticket');
+        if (user?.token) {
+          const userId = user._id;
+          const response = await fetch(`/zoo/ticket/${userId}`, {
+            headers: { 'Authorization': `Bearer ${user.token}` }
+          });
+          const json = await response.json();
+
+          if (response.ok) {
+            dispatch({ type: 'ADD_TICKET', payload: json.tickets });
+          }
         }
       } catch (error) {
-        console.error('Error deleting ticket:', error);
+        console.error('Error fetching tickets:', error);
       }
     };
+
+    fetchTickets();
+  }, [dispatch, user, editedTicket]); // Add editedTicket as a dependency
+
+
+  const handleEditTicket = (ticket) => {
+    setEditTicket(ticket);
+    setEditedTicket({ ...ticket });
+  };
+
+  const handleUpdateTicket = async () => {
+    try {
+      if (!editedTicket) return;
   
-    return (
-        <Layout>
-          <div>
-            <h1>Manage Tickets</h1>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Dates</th>
-                  <th>Types</th>
-                  <th>Prices</th>
-                  <th>Card Numbers</th>
-                  <th>Expiry Dates</th>
-                  <th>CVV</th>
-                  <th>Card Names</th>
-                  <th>Booking Codes</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tickets && tickets.map((ticket, index) => (
-                  <tr key={index}>
-                    <td>{new Date(ticket.date).toLocaleDateString('en-GB')}</td>
-                    <td>{ticket.Type}</td>
-                    <td>{ticket.Price}</td>
-                    <td>{ticket.cardNumber}</td>
-                    <td>{ticket.expiryDate}</td>
-                    <td>{ticket.CVV}</td>
-                    <td>{ticket.cardName}</td>
-                    <td>{ticket.bookingCode}</td>
-                    <td>
-                      <Button variant="primary" onClick={() => handleEditTicket(ticket)}>Edit</Button>{' '}
-                      <Button variant="danger" onClick={() => handleDeleteTicket(ticket._id)}>Delete</Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-            <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
-              <Modal.Header closeButton>
-                <Modal.Title>Edit Ticket</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                {editedValues && (
-                  <Form onSubmit={handleUpdateTicket}>
-                    <Form.Group >
-                      <Form.Label>Date</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="date"
-                        value={editedValues.date}
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
-                    <Form.Group >
-                      <Form.Label>Type</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="Type"
-                        value={editedValues.Type}
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
-                    <Form.Group >
-                      <Form.Label>Price</Form.Label>
-                      <Form.Control
-                        type="number"
-                        name="Price"
-                        value={editedValues.Price}
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
-                    <Form.Group >
-                      <Form.Label>Exipry Date</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="ExpiryDate"
-                        value={editedValues.expiryDate}
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
-                    <Form.Group >
-                      <Form.Label>CVV</Form.Label>
-                      <Form.Control
-                        type="number"
-                        name="CVV"
-                        value={editedValues.CVV}
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
-                    <Form.Group >
-                      <Form.Label>Card Name</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="cardName"
-                        value={editedValues.cardName}
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
-                    {/* Add similar Form.Group components for other ticket fields */}
-                    <Button variant="primary" type="submit">
-                      Update Ticket
-                    </Button>
-                  </Form>
-                )}
-              </Modal.Body>
-            </Modal>
-          </div>
-        </Layout>
-      );
-    };
-    
-    export default ManageTicketPage;
+      const response = await fetch(`/zoo/ticket/${editTicket._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
+        body: JSON.stringify(editedTicket)
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        console.log('Ticket updated successfully:', data);
+        dispatch({ type: 'UPDATE_TICKET', payload: data });
+        setEditTicket(null);
+        setEditedTicket(null);
+      } else {
+        console.error('Failed to update ticket:', data.error);
+      }
+    } catch (error) {
+      console.error('Error updating ticket:', error);
+    }
+  };
+
+  const handleDeleteTicket = async (ticketId) => {
+    try {
+      const response = await fetch(`/zoo/ticket/${ticketId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${user.token}` }
+      });
+
+      if (response.ok) {
+        dispatch({ type: 'DELETE_TICKET', payload: ticketId });
+      } else {
+        console.error('Failed to delete ticket');
+      }
+    } catch (error) {
+      console.error('Error deleting ticket:', error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedTicket(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  return (
+    <Layout>
+      <div>
+        <h1>Manage Tickets</h1>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Price</th>
+              <th>Card Number</th>
+              <th>Expiry Date</th>
+              <th>CVV</th>
+              <th>Card Name</th>
+              <th>Booking Code</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tickets && tickets.map(ticket => (
+              <tr key={ticket._id}>
+                <td>{new Date(ticket.date).toLocaleDateString('en-GB')}</td>
+                <td>{editTicket && editTicket._id === ticket._id ?
+                  <Form.Control as="select" name="Type" value={editedTicket.Type} onChange={handleInputChange}>
+                    <option value="Regular">Regular</option>
+                    <option value="VIP">VIP</option>
+                  </Form.Control> : ticket.Type}
+                </td>
+                <td>{editTicket && editTicket._id === ticket._id ?
+                  <Form.Control type="text" name="Price" value={editedTicket.Price} onChange={handleInputChange} readOnly />
+                  : ticket.Price}
+                </td>
+                <td>{editTicket && editTicket._id === ticket._id ?
+                  <Form.Control type="text" name="cardNumber" value={editedTicket.cardNumber} onChange={handleInputChange} />
+                  : ticket.cardNumber}
+                </td>
+                <td>{editTicket && editTicket._id === ticket._id ?
+                  <Form.Control type="text" name="expiryDate" value={editedTicket.expiryDate} onChange={handleInputChange} />
+                  : ticket.expiryDate}
+                </td>
+                <td>{editTicket && editTicket._id === ticket._id ?
+                  <Form.Control type="text" name="CVV" value={editedTicket.CVV} onChange={handleInputChange} />
+                  : ticket.CVV}
+                </td>
+                <td>{editTicket && editTicket._id === ticket._id ?
+                  <Form.Control type="text" name="cardName" value={editedTicket.cardName} onChange={handleInputChange} />
+                  : ticket.cardName}
+                </td>
+                <td>{ticket.bookingCode}</td>
+                <td>
+                  {editTicket && editTicket._id === ticket._id ?
+                    <Button variant="success" onClick={handleUpdateTicket}>Save</Button>
+                    :
+                    <Button variant="primary" onClick={() => handleEditTicket(ticket)}>Edit</Button>
+                  }
+                  {' '}
+                  <Button variant="danger" onClick={() => handleDeleteTicket(ticket._id)}>Delete</Button>
+                  <Link to = '/home'>
+                    <Button>Buy Ticket</Button>
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+    </Layout>
+  );
+};
+
+export default ManageTicketPage;

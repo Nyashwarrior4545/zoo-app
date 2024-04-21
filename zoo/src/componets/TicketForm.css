@@ -8,6 +8,7 @@
   }
 
   .ticket-form-container {
+    margin-top: 0;
     display: flex;
     flex-direction: row; /* Display calendar and form side by side */
     align-items: flex-start; /* Align items to the top */

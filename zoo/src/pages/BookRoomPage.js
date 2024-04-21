@@ -81,6 +81,27 @@ const BookRoomPage = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    // Define the discount percentage
+    const DISCOUNT_PERCENTAGE = 5;
+
+    // Function to calculate the discounted price
+    const calculateDiscountedPrice = (price) => {
+        return price - (price * DISCOUNT_PERCENTAGE) / 100;
+    };
+
+    // Apply discount if the user is logged in
+    const applyDiscount = (price) => {
+        if (user) {
+            return calculateDiscountedPrice(price);
+        } else {
+            return price;
+        }
+    };
+
+    // Message indicating discount applied
+    const discountAppliedMessage = user ? <p className="discount-message">Discount applied</p> : null;
+
+
     return (
         <Layout>
             <div className='roompage'>
@@ -95,7 +116,8 @@ const BookRoomPage = () => {
                                 <Card.Title>{room.title}</Card.Title>
                                 <Card.Text>{room.detail}</Card.Text>
                                 <Card.Text>{room.available ? 'Available' : 'Unavailable'}</Card.Text>
-                                <Card.Text>{room.price}</Card.Text>
+                                {discountAppliedMessage}
+                                <Card.Text>Price: {applyDiscount(room.price)}</Card.Text>
                                 <Button
                                     variant={formData.roomId === room._id ? "danger" : "success"}
                                     disabled={!room.available} // Disable button if room is unavailable
